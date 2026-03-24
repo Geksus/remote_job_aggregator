@@ -1,3 +1,5 @@
+import time
+
 import requests
 
 from datetime import datetime
@@ -16,7 +18,8 @@ def scrape_himalayan():
         "seniority": "Mid-level",
     }
 
-    for i in range(1):
+    for pg in range(10):
+        time.sleep(30)
         try:
             response = requests.get(url, params=params, timeout=10)
             print(response.url)

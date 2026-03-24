@@ -10,13 +10,14 @@ import time
 
 
 class ApplicationLinkSpider:
-    def __init__(self, headless=False, auth_file="himalayan_auth.json"):
+    def __init__(self, headless=False, auth_file="himalayan_auth.json", proxy=None):
         """
         Initialize the spider with browser options and authentication.
 
         Args:
             headless: Run browser in headless mode (default: False for visible browser)
             auth_file: Path to JSON file containing cookies and localStorage data
+            proxy: Proxy server address (e.g., "http://proxy_ip:port" or "proxy_ip:port")
         """
         chrome_options = Options()
         if headless:
@@ -246,6 +247,7 @@ class ApplicationLinkSpider:
         results = []
 
         for idx, job in enumerate(jobs):
+            time.sleep(60)
             print(f"Processing job {idx + 1}/{len(jobs)}: {job.get('title', 'Unknown')} at {job.get('companyName', 'Unknown')}")
 
             job_url = job.get('url')
@@ -263,6 +265,8 @@ class ApplicationLinkSpider:
             result = self.process_job_link(job_url)
             result['job_title'] = job.get('title')
             result['company'] = job.get('companyName')
+            result['minSalary'] = job.get('minSalary')
+            result['maxSalary'] = job.get('maxSalary')
             results.append(result)
 
             print(f"  Status: {result['status']}")
